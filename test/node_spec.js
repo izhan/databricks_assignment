@@ -9,8 +9,8 @@ describe('Node', function(){
       expect(node.collapsed).to.be.equal(collapsed);
     });
 
-    it('should have the path of the root node', function(){
-      expect(node.path).to.be.equal('/');
+    it('should have its name as its path', function(){
+      expect(node.path).to.be.equal('/foo');
     });
 
     it('should have no children', function(){
@@ -33,8 +33,21 @@ describe('Node', function(){
     });
 
     it('should inherit path from parent', function(){
-      expect(childNode.path).to.be.equal('/bar');
-      expect(childNode2.path).to.be.equal('/bar/data');
+      expect(childNode.path).to.be.equal('/foo/bar');
+      expect(childNode2.path).to.be.equal('/foo/bar/data');
     });
   });
+
+  // describe('updateName', function(){
+  //   var node = new Node('foo', false);
+  //   var childNode = new Node('data', false);
+  //   node.appendChild(childNode);
+  //   node.updateName('bar');
+  //   childNode.updateName(childNode);
+
+  //   it('should also update the nodes path as well', function(){
+  //     expect(node.name).to.be.equal('bar');
+  //     expect(node.path).to.be.equal('/bar');
+  //   });
+  // });
 });

@@ -3,19 +3,24 @@
     this.name = name;
     this.collapsed = collapsed;
     this.children = [];
-    this.path = "/";
+    this.path = "/" + name;
   };
 
   Node.prototype.appendChild = function(childNode) {
     this.children.push(childNode);
     childNode.parent = this;
 
-    if (this.path == "/") {
-      childNode.path = this.path + childNode.name;
-    } else {
-      childNode.path = this.path + "/" + childNode.name;
-    }
+    childNode.path = this.path + "/" + childNode.name;
     
     return childNode;
+  };
+
+  Node.prototype.updateName = function(name) {
+    this.name = name;
+    if (this.parent) {
+      this.path = this.parent + "/" + name;
+    } else {
+      this.path = "/" + name;
+    }
   };
 }());
