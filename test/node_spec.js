@@ -44,9 +44,12 @@ describe('Node', function(){
     node.appendChild(childNode);
     node.updateName('bar');
 
-    it('should also update the nodes path as well', function(){
+    it('should update the nodes path', function(){
       expect(node.name).to.be.equal('bar');
       expect(node.path).to.be.equal('/bar');
+    });
+
+    it('should update the childrens path as well', function(){
       expect(childNode.path).to.be.equal('/bar/data');
 
       childNode.updateName('bricks');
