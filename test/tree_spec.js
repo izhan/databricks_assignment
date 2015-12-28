@@ -1,4 +1,3 @@
-// tests.js
 describe('Tree', function(){
   describe('constructor', function(){
     var rootNode = new Node("foo", false);

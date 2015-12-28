@@ -1,4 +1,3 @@
-// tests.js
 describe('Node', function(){
   describe('constructor', function(){
     var name = 'foo';
