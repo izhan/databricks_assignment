@@ -38,16 +38,19 @@ describe('Node', function(){
     });
   });
 
-  // describe('updateName', function(){
-  //   var node = new Node('foo', false);
-  //   var childNode = new Node('data', false);
-  //   node.appendChild(childNode);
-  //   node.updateName('bar');
-  //   childNode.updateName(childNode);
+  describe('updateName', function(){
+    var node = new Node('foo', false);
+    var childNode = new Node('data', false);
+    node.appendChild(childNode);
+    node.updateName('bar');
 
-  //   it('should also update the nodes path as well', function(){
-  //     expect(node.name).to.be.equal('bar');
-  //     expect(node.path).to.be.equal('/bar');
-  //   });
-  // });
+    it('should also update the nodes path as well', function(){
+      expect(node.name).to.be.equal('bar');
+      expect(node.path).to.be.equal('/bar');
+      expect(childNode.path).to.be.equal('/bar/data');
+
+      childNode.updateName('bricks');
+      expect(childNode.path).to.be.equal('/bar/bricks');
+    });
+  });
 });
