@@ -6,7 +6,7 @@ module.exports = function(grunt){
     // Mocha
     mocha: {
       all: {
-        src: ['tests/testrunner.html'],
+        src: ['test/testrunner.html'],
       },
       options: {
         run: true
@@ -23,7 +23,7 @@ module.exports = function(grunt){
     },
     watch: {
       files: ['<%= jshint.files %>'],
-      tasks: ['jshint']
+      tasks: ['jshint', 'mocha']
     }
   });
 
