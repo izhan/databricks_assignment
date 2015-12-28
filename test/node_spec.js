@@ -18,10 +18,13 @@ describe('Node', function(){
     });
   });
 
-  describe('addChild', function(){
+  describe('appendChild', function(){
     var parentNode = new Node('foo', false);
-    var childNode = parentNode.addChild('bar', false);
-    var childNode2 = childNode.addChild('data', false);
+    var childNode = new Node('bar', false);
+    var childNode2 = new Node('data', false);
+
+    parentNode.appendChild(childNode);
+    childNode.appendChild(childNode2);
 
     it('should link parent and child', function(){
       expect(childNode.parent).to.be.equal(parentNode);

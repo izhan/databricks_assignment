@@ -6,15 +6,14 @@
     this.path = "/";
   };
 
-  Node.prototype.addChild = function(name, collapsed) {
-    var childNode = new Node(name, collapsed);
+  Node.prototype.appendChild = function(childNode) {
     this.children.push(childNode);
     childNode.parent = this;
 
     if (this.path == "/") {
-      childNode.path = this.path + name;
+      childNode.path = this.path + childNode.name;
     } else {
-      childNode.path = this.path + "/" + name;
+      childNode.path = this.path + "/" + childNode.name;
     }
     
     return childNode;
