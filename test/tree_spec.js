@@ -6,12 +6,12 @@ describe('Tree', function(){
   var grandChildNode2 = new BrowserNode('grandchild2', false);
   var tree;
 
-  beforeEach(function() {
+  before(function() {
     rootNode.appendChild(childNode1);
     rootNode.appendChild(childNode2);
     childNode1.appendChild(grandChildNode1);
     childNode1.appendChild(grandChildNode2);
-    tree = new BrowserTree(rootNode)
+    tree = new BrowserTree(rootNode);
   });
 
   describe('constructor', function(){
@@ -72,6 +72,17 @@ describe('Tree', function(){
 
     it('should update the name correctly', function() {
       expect(childNode2.name).to.be.equal("newchild2");
+    });
+
+    it('should use the new path in the map for node and children', function() {
+      var map = tree.pathToNodeMap;
+      expect(map[childNode2.path]).to.be.equal(childNode2);
+      expect(map[childNode2.children[0].path]).to.be.equal(childNode2.children[0]);
+    });
+
+    it('should remove old path in the map for node', function() {
+      var map = tree.pathToNodeMap;
+      expect('child2').to.be.equal(null);
     });
   });
 
