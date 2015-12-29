@@ -1,6 +1,10 @@
 var Parser = (function () {
-  // private
-  function convertToNode(data) {
+  /**
+   * @param  {Object} data The JSON representation of the node.
+   * @return {BrowserNode} The BrowserNode object represented by the JSON
+   * @private
+   */
+  var convertToNode = function(data) {
     var currentNode = new BrowserNode(data.name, data.collapsed);
 
     if (!data.children) {
@@ -13,9 +17,13 @@ var Parser = (function () {
     }
 
     return currentNode;
-  }
+  };
 
   return {
+    /**
+     * @param  {Object} data The JSON representation of the tree
+     * @return {BrowserTree} The BrowserTree object represented by the JSON
+     */
     initTree: function(data) {
       var rootNode = convertToNode(data);
       return new BrowserTree(rootNode);
