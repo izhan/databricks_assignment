@@ -1,4 +1,4 @@
-describe('Node', function(){
+describe('BrowserNode', function(){
   describe('constructor', function(){
     var name = 'foo';
     var collapsed = false;

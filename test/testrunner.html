@@ -9,6 +9,9 @@
   <script src="../node_modules/mocha/mocha.js"></script>
   <script src="../node_modules/chai/chai.js"></script>
 
+  <!-- For testing ReactJS-->
+  <script src="../examples/build/react-with-addons.js"></script>
+
   <script>
     mocha.setup('bdd')
     mocha.reporter('html');
@@ -17,17 +20,23 @@
     var assert = chai.assert;
     var expect = chai.expect;
     var should = chai.should();
+    var TestUtils = React.addons.TestUtils;
+
   </script>
 
-  <!-- Source files -->
+  <!-- Library source files -->
   <script src="../src/node.js"></script>
   <script src="../src/tree.js"></script>
   <script src="../src/parser.js"></script>
 
-  <!-- Tests -->
+  <!-- ReactJS source files -->
+  <script src="../examples/build/node.js"></script>
+
+  <!-- Specs -->
   <script src="tree_spec.js"></script>
   <script src="node_spec.js"></script>
   <script src="parser_spec.js"></script>
+  <script src="react_node_spec.js"></script>
 
   <script>
     // Only tests run in real browser, injected script run if options.run == true

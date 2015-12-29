@@ -1,12 +1,12 @@
-describe('Tree', function(){
-  var rootNode = new BrowserNode('foo', false);
-  var childNode1 = new BrowserNode('child1', false);
-  var childNode2 = new BrowserNode('child2', false);
-  var grandChildNode1 = new BrowserNode('grandchild1', false);
-  var grandChildNode2 = new BrowserNode('grandchild2', false);
-  var tree;
+describe('BrowserTree', function(){
+  var rootNode, childNode1, childNode2, grandChildNode1, grandChildNode2, tree;
 
-  before(function() {
+  beforeEach(function() {
+    rootNode = new BrowserNode('foo', false);
+    childNode1 = new BrowserNode('child1', false);
+    childNode2 = new BrowserNode('child2', false);
+    grandChildNode1 = new BrowserNode('grandchild1', false);
+    grandChildNode2 = new BrowserNode('grandchild2', false);
     rootNode.appendChild(childNode1);
     rootNode.appendChild(childNode2);
     childNode1.appendChild(grandChildNode1);
@@ -28,7 +28,7 @@ describe('Tree', function(){
   });
 
   describe('appendNode', function() {
-    before(function() {
+    beforeEach(function() {
       tree.appendNode(childNode2.path, "dummy");
     });
 
@@ -49,7 +49,7 @@ describe('Tree', function(){
   });
 
   describe('deleteNode', function() {
-    before(function() {
+    beforeEach(function() {
       tree.deleteNode(childNode1.path);
     });
 
@@ -66,28 +66,28 @@ describe('Tree', function(){
   });
 
   describe('updateName', function() {
-    before(function() {
-      tree.updateName(childNode2.path, "newchild2");
+    beforeEach(function() {
+      tree.updateName(childNode1.path, "newchild1");
     });
 
     it('should update the name correctly', function() {
-      expect(childNode2.name).to.be.equal("newchild2");
+      expect(childNode1.name).to.be.equal("newchild1");
     });
 
     it('should use the new path in the map for node and children', function() {
       var map = tree.pathToNodeMap;
-      expect(map[childNode2.path]).to.be.equal(childNode2);
-      expect(map[childNode2.children[0].path]).to.be.equal(childNode2.children[0]);
+      expect(map[childNode1.path]).to.be.equal(childNode1);
+      expect(map[childNode1.children[0].path]).to.be.equal(childNode1.children[0]);
     });
 
     it('should remove old path in the map for node', function() {
       var map = tree.pathToNodeMap;
-      expect(map['/foo/child2']).to.be.equal(null);
+      expect(map['/foo/child1']).to.be.equal(null);
     });
   });
 
   describe('toggleCollapsed', function() {
-    before(function() {
+    beforeEach(function() {
       tree.toggleCollapsed(childNode2.path);
     });
 
