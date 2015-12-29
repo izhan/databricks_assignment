@@ -2,19 +2,30 @@ var Node = React.createClass({
   getInitialState: function() {
     return {
       isEditing: false,
-      addChildName: ""
+      addChildName: "",
+      draft: "",
+      addVisible: false
     }
   },
 
   componentDidUpdate: function (prevProps, prevState) {
+    // focus on input field if we toggle its visibility
     if (!prevState.isEditing && this.state.isEditing) {
       var node = ReactDOM.findDOMNode(this.refs.editName);
+      node.focus();
+    }
+    if (!prevState.addVisible && this.state.addVisible) {
+      var node = ReactDOM.findDOMNode(this.refs.addChild);
       node.focus();
     }
   },
 
   toggleEditing: function() {
     this.setState({isEditing: !this.state.isEditing});
+  },
+
+  toggleAddVisible: function() {
+    this.setState({addVisible: !this.state.addVisible});
   },
 
   onChangeName: function(event) {
@@ -36,21 +47,25 @@ var Node = React.createClass({
   },
 
   onBlur: function() {
-    this.props.tree.updateName(this.props.nodeData.path, this.state.draft);
+    var updatedName = this.state.draft.trim();
+    if (updatedName) {
+      this.props.tree.updateName(this.props.nodeData.path, this.state.draft);
+      this.props.forceUpdateTree();
+    }
     this.toggleEditing();
-    this.props.forceUpdateTree();
   },
 
   onAddChild: function() {
     this.props.tree.appendNode(this.props.nodeData.path, this.state.addChildName);
-    this.setState({addChildName: ""});
+    this.setState({addChildName: "", addVisible: false});
     this.props.forceUpdateTree();
   },
 
   renderCollapseButton: function() {
+    var collapseText = this.props.nodeData.collapsed ? "+" : "-";
     return (
       <div className="collapse-button" onClick={this.onToggleCollapsed}>
-        collapse
+        [{collapseText}]
       </div>
     )
   },
@@ -71,7 +86,6 @@ var Node = React.createClass({
           key={child.path}
           tree={tree}
           forceUpdateTree={forceUpdateTree}
-          className="browser-node"
         />
       ); 
     });
@@ -83,14 +97,14 @@ var Node = React.createClass({
     }
     return (
       <div className="delete-button" onClick={this.onDelete}>x</div>
-    )
+    );
   },
 
   renderNameInput: function() {
     if(this.state.isEditing) {
       return (<input
         ref="editName"
-        className="browser-edit"
+        className="node-edit"
         value={this.state.draft}
         onClick={this.toggleEditing}
         onChange={this.onChangeName}
@@ -98,7 +112,7 @@ var Node = React.createClass({
       />);
     } else {
       return (
-        <div className="browser-name" onClick={this.toggleEditing}>
+        <div className="node-name" onClick={this.toggleEditing}>
           {this.props.nodeData.name}
         </div>);
     }
@@ -107,33 +121,40 @@ var Node = React.createClass({
   renderAddButton: function() {
     if (this.props.nodeData.collapsed) {
       return;
-    }
-
-    return (
-      <div className="browser-add-child">
-        <input
-          ref="addChild"
-          className="add-child-input"
-          value={this.state.addChildName}
-          onChange={this.onChangeChild}
-        />
-        <div className="add-child-button" onClick={this.onAddChild}>
+    } else if (this.state.addVisible) {
+      return (
+        <div className="node-add-child">
+          <input
+            ref="addChild"
+            className="add-child-input"
+            value={this.state.addChildName}
+            onChange={this.onChangeChild}
+          />
+          <button className="add-input-button" onClick={this.onAddChild}>
+            +
+          </button>
+        </div>
+      )
+    } else {
+      return (
+        <div className="node-add-button" onClick={this.toggleAddVisible}>
           +
         </div>
-      </div>
-    )
+      )
+    }
   },
 
   render: function() {
     return (
-      <div>
+      <div className="node-wrapper">
         {this.renderCollapseButton()}
         {this.renderNameInput()}
-        {this.props.nodeData.name}
-        {this.props.nodeData.path}
+        <div className="node-path">
+          {this.props.nodeData.path}
+        </div>
         {this.renderDeleteButton()}
 
-        <div className="browser-children">
+        <div className="node-children">
           {this.renderChildren()}
         </div>
         {this.renderAddButton()}

@@ -1,9 +1,49 @@
-.browser-children {
+.node-children {
   padding-left: 40px;
 }
 
 .delete-button {
   display: inline-block;
+  margin-left: 6px;
+  vertical-align: top;
+
   cursor: pointer;
   color: red;
+}
+
+.collapse-button {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.node-name {
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.node-name:hover {
+  background: yellow;
+}
+
+.node-path {
+  display: inline-block;
+  color: #ccc;
+  font-size: 12px;
+}
+
+.node-wrapper {
+  padding: 10px;
+}
+
+.node-add-child {
+  padding-left: 15px;
+}
+
+.node-add-button {
+  text-align: center;
+  background: #eee;
+  width: 200px;
+  cursor: pointer;
 }
