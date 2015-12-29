@@ -2,7 +2,7 @@ describe('Node', function(){
   describe('constructor', function(){
     var name = 'foo';
     var collapsed = false;
-    var node = new Node(name, collapsed);
+    var node = new BrowserNode(name, collapsed);
 
     it('should properly assign name and collapsed properties', function(){
       expect(node.name).to.be.equal(name);
@@ -19,9 +19,9 @@ describe('Node', function(){
   });
 
   describe('appendChild', function(){
-    var parentNode = new Node('foo', false);
-    var childNode = new Node('bar', false);
-    var childNode2 = new Node('data', false);
+    var parentNode = new BrowserNode('foo', false);
+    var childNode = new BrowserNode('bar', false);
+    var childNode2 = new BrowserNode('data', false);
 
     parentNode.appendChild(childNode);
     childNode.appendChild(childNode2);
@@ -39,8 +39,8 @@ describe('Node', function(){
   });
 
   describe('updateName', function(){
-    var node = new Node('foo', false);
-    var childNode = new Node('data', false);
+    var node = new BrowserNode('foo', false);
+    var childNode = new BrowserNode('data', false);
     node.appendChild(childNode);
     node.updateName('bar');
 
