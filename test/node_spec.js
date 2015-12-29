@@ -23,8 +23,10 @@ describe('Node', function(){
     var childNode = new BrowserNode('bar', false);
     var childNode2 = new BrowserNode('data', false);
 
-    parentNode.appendChild(childNode);
-    childNode.appendChild(childNode2);
+    before(function() {
+      parentNode.appendChild(childNode);
+      childNode.appendChild(childNode2);
+    });
 
     it('should link parent and child', function(){
       expect(childNode.parent).to.be.equal(parentNode);
@@ -41,8 +43,11 @@ describe('Node', function(){
   describe('updateName', function(){
     var node = new BrowserNode('foo', false);
     var childNode = new BrowserNode('data', false);
-    node.appendChild(childNode);
-    node.updateName('bar');
+
+    before(function() {
+      node.appendChild(childNode);
+      node.updateName('bar');
+    });
 
     it('should update the nodes path', function(){
       expect(node.name).to.be.equal('bar');
