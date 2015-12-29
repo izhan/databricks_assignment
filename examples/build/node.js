@@ -1,7 +1,8 @@
 var Node = React.createClass({displayName: "Node",
   getInitialState: function() {
     return {
-      isEditing: false
+      isEditing: false,
+      addChildName: ""
     }
   },
 
@@ -16,8 +17,12 @@ var Node = React.createClass({displayName: "Node",
     this.setState({isEditing: !this.state.isEditing});
   },
 
-  onChange: function(event) {
+  onChangeName: function(event) {
     this.setState({draft: event.target.value});
+  },
+
+  onChangeChild: function(event) {
+    this.setState({addChildName: event.target.value});
   },
 
   onDelete: function() {
@@ -28,6 +33,12 @@ var Node = React.createClass({displayName: "Node",
   onBlur: function() {
     this.props.tree.updateName(this.props.nodeData.path, this.state.draft);
     this.toggleEditing();
+    this.props.forceUpdateTree();
+  },
+
+  onAddChild: function() {
+    this.props.tree.appendNode(this.props.nodeData.path, this.state.addChildName);
+    this.setState({addChildName: ""});
     this.props.forceUpdateTree();
   },
 
@@ -65,7 +76,7 @@ var Node = React.createClass({displayName: "Node",
         className: "browser-edit", 
         value: this.state.draft, 
         onClick: this.toggleEditing, 
-        onChange: this.onChange, 
+        onChange: this.onChangeName, 
         onBlur: this.onBlur}
       ));
     } else {
@@ -74,6 +85,22 @@ var Node = React.createClass({displayName: "Node",
           this.props.nodeData.name
         ));
     }
+  },
+
+  renderAddChild: function() {
+    return (
+      React.createElement("div", {className: "browser-add-child"}, 
+        React.createElement("input", {
+          ref: "addChild", 
+          className: "add-child-input", 
+          value: this.state.addChildName, 
+          onChange: this.onChangeChild}
+        ), 
+        React.createElement("div", {className: "add-child-button", onClick: this.onAddChild}, 
+          "+"
+        )
+      )
+    )
   },
 
   render: function() {
@@ -86,7 +113,8 @@ var Node = React.createClass({displayName: "Node",
 
         React.createElement("div", {className: "browser-children"}, 
           this.renderChildren()
-        )
+        ), 
+        this.renderAddChild()
       )
     );
   }
