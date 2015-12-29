@@ -25,6 +25,11 @@ var Node = React.createClass({
     this.setState({addChildName: event.target.value});
   },
 
+  onToggleCollapsed: function() {
+    this.props.tree.toggleCollapsed(this.props.nodeData.path);
+    this.props.forceUpdateTree();
+  },
+
   onDelete: function() {
     this.props.tree.deleteNode(this.props.nodeData.path);
     this.props.forceUpdateTree();
@@ -42,10 +47,22 @@ var Node = React.createClass({
     this.props.forceUpdateTree();
   },
 
+  renderCollapseButton: function() {
+    return (
+      <div className="collapse-button" onClick={this.onToggleCollapsed}>
+        collapse
+      </div>
+    )
+  },
+
   renderChildren: function() {
     var children = this.props.nodeData.children;
     var tree = this.props.tree;
     var forceUpdateTree = this.props.forceUpdateTree;
+
+    if (this.props.nodeData.collapsed) {
+      return;
+    }
 
     return children.map(function(child) {
       return (
@@ -87,7 +104,11 @@ var Node = React.createClass({
     }
   },
 
-  renderAddChild: function() {
+  renderAddButton: function() {
+    if (this.props.nodeData.collapsed) {
+      return;
+    }
+
     return (
       <div className="browser-add-child">
         <input
@@ -106,6 +127,7 @@ var Node = React.createClass({
   render: function() {
     return (
       <div>
+        {this.renderCollapseButton()}
         {this.renderNameInput()}
         {this.props.nodeData.name}
         {this.props.nodeData.path}
@@ -114,7 +136,7 @@ var Node = React.createClass({
         <div className="browser-children">
           {this.renderChildren()}
         </div>
-        {this.renderAddChild()}
+        {this.renderAddButton()}
       </div>
     );
   }

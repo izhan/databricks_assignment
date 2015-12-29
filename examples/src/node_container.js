@@ -6,11 +6,11 @@ var NodeContainer = React.createClass({
       children: [
         {
           name: 'child1',
-          collapsed: true
+          collapsed: false
         },
         {
           name: 'child2',
-          collapsed: true
+          collapsed: false
         },
         {
           name: 'child3',
@@ -18,7 +18,7 @@ var NodeContainer = React.createClass({
           children: [
             {
               name: 'grandchild1',
-              collapsed: true
+              collapsed: false
             },
             {
               name: 'grandchild2',
