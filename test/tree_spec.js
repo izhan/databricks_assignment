@@ -16,7 +16,7 @@ describe('Tree', function(){
       expect(tree.rootNode).to.be.equal(rootNode);
     });
 
-    it('should have an index of path to nodes', function() {
+    it('should have a map of path to nodes', function() {
       var map = tree.pathToNodeMap;
       expect(map[rootNode.path]).to.be.equal(rootNode);
       expect(map[childNode1.path]).to.be.equal(childNode1);
@@ -24,4 +24,38 @@ describe('Tree', function(){
     });
   });
 
+  describe('appendNode', function() {
+    tree.appendNode(childNode2.path, "dummy");
+
+    it('should append node to specified path as a child', function() {
+      expect(childNode2.children.length).to.be.equal(1);
+      expect(childNode2.children[0].name).to.be.equal("dummy");
+    });
+
+    it('should update the map with the new node', function() {
+      var dummyNode = childNode2.children[0];
+      expect(tree.pathToNodeMap[dummyNode.path]).to.be.equal(dummyNode);
+    });
+  });
+
+  describe('deleteNode', function() {
+    tree.deleteNode(childNode1.path);
+
+    it('should remove specified node', function() {
+      expect(rootNode.children.length).to.be.equal(1);
+    });
+
+    it('should remove the node and its descendents from map', function() {
+      expect(map[childNode1.path]).to.be.null();
+      expect(map[grandChildNode1.path]).to.be.null();
+      expect(map[grandChildNode2.path]).to.be.null();
+    });
+  });
+
+  describe('updateNode', function() {
+    tree.updateNode(childNode2.path, "newchild2");
+    it('should update the name correctly', function() {
+      expect(childNode2.name).to.be.equal("newchild2");
+    });
+  });
 });
