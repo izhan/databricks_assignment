@@ -41,6 +41,12 @@ var NodeContainer = React.createClass({
     };
   },
   render: function() {
-    return (<Node nodeData={this.state.tree.rootNode} tree={this.state.tree} forceUpdateTree={this.forceUpdateTree}/>);
+    return (
+      <Node
+        nodeData={this.state.tree.rootNode}
+        tree={this.state.tree}
+        forceUpdateTree={this.forceUpdateTree}
+        isParent={true}
+      />);
   }
 });

@@ -1,3 +1,9 @@
-#main {
-  background: blue;
+.browser-children {
+  padding-left: 40px;
+}
+
+.delete-button {
+  display: inline-block;
+  cursor: pointer;
+  color: red;
 }
