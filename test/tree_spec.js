@@ -82,7 +82,7 @@ describe('Tree', function(){
 
     it('should remove old path in the map for node', function() {
       var map = tree.pathToNodeMap;
-      expect('child2').to.be.equal(null);
+      expect(map['/foo/child2']).to.be.equal(null);
     });
   });
 
@@ -92,7 +92,7 @@ describe('Tree', function(){
     });
 
     it('should toggle the collapsed property', function() {
-      expect(childNode2.collapsed).to.be.true();
+      expect(childNode2.collapsed).to.be.equal(true);
     });
   });
 });
