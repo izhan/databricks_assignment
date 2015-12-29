@@ -29,13 +29,18 @@ var NodeContainer = React.createClass({displayName: "NodeContainer",
       ]
     }
   },
-  
+
+  // TODO this is a hack!
+  forceUpdateTree: function() {
+    this.forceUpdate();
+  },
+
   getInitialState: function() {
     return {
       tree: Parser.initTree(NodeContainer.sampleData)
     };
   },
   render: function() {
-    return (React.createElement(Node, {nodeData: this.state.tree.rootNode}));
+    return (React.createElement(Node, {nodeData: this.state.tree.rootNode, tree: this.state.tree, forceUpdateTree: this.forceUpdateTree}));
   }
 });
