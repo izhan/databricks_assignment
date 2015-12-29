@@ -1,4 +1,5 @@
 var NodeContainer = React.createClass({displayName: "NodeContainer",
+  // this data can come from anywhere (ajax, etc)
   statics: {
     sampleData: {
       name: 'root',
@@ -30,7 +31,12 @@ var NodeContainer = React.createClass({displayName: "NodeContainer",
     }
   },
 
-  // TODO this is a hack!
+  // TODO this is a hack! Currently, any updates to the tree will not trigger
+  // a rerender since ReactJS checks for shallow equalities. We can manually
+  // force a trigger by calling this from a node. This will have performance
+  // issues if the tree grows large. We can solve this issue by using Reflux
+  // or having smarter ways to notify relevant components that need to be
+  // updated
   forceUpdateTree: function() {
     this.forceUpdate();
   },
@@ -40,6 +46,7 @@ var NodeContainer = React.createClass({displayName: "NodeContainer",
       tree: Parser.initTree(NodeContainer.sampleData)
     };
   },
+
   render: function() {
     return (
       React.createElement(Node, {
