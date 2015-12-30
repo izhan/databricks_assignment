@@ -7,7 +7,7 @@
     this.rootNode = rootNode;
 
     this.pathToNodeMap = {};
-    updateMapPaths(this.pathToNodeMap, rootNode);
+    _updateMapPaths(this.pathToNodeMap, rootNode);
   };
 
   /**
@@ -17,7 +17,8 @@
    */
   BrowserTree.prototype.appendNode = function(path, name) {
     var parentNode = this.pathToNodeMap[path];
-    var childNode = new BrowserNode(name, false);
+    var sanitizedName = _sanitizeName(name);
+    var childNode = new BrowserNode(sanitizedName, false);
     parentNode.appendChild(childNode);
 
     this.pathToNodeMap[childNode.path] = childNode;
@@ -37,7 +38,7 @@
     var siblings = parentNode.children;
     siblings.splice(siblings.indexOf(childNode), 1);
 
-    removeMapPaths(this.pathToNodeMap, childNode);
+    _removeMapPaths(this.pathToNodeMap, childNode);
     return childNode;
   };
 
@@ -49,9 +50,10 @@
   BrowserTree.prototype.updateName = function(path, name) {
     var node = this.pathToNodeMap[path];
 
-    removeMapPaths(this.pathToNodeMap, node);
-    node.updateName(name);
-    updateMapPaths(this.pathToNodeMap, node);
+    _removeMapPaths(this.pathToNodeMap, node);
+    var sanitizedName = _sanitizeName(name);
+    node.updateName(sanitizedName);
+    _updateMapPaths(this.pathToNodeMap, node);
 
     return node;
   };
@@ -74,7 +76,7 @@
    * @return {Object}
    * @private
    */
-  var updateMapPaths = function(map, parentNode) {
+  var _updateMapPaths = function(map, parentNode) {
     parentNode.mapChildNodes(function(node){
       map[node.path] = node;
     });
@@ -88,10 +90,14 @@
    * @return {Object}
    * @private
    */
-  var removeMapPaths = function(map, parentNode) {
+  var _removeMapPaths = function(map, parentNode) {
     parentNode.mapChildNodes(function(node){
       map[node.path] = null;
     });
     return map;
+  };
+
+  var _sanitizeName = function(name) {
+    return name.replace(/\\/, "\\\\").replace(/\//, "\\\/");
   };
 }());
