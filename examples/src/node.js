@@ -140,7 +140,6 @@ var Node = React.createClass({
           tree={this.props.tree}
           forceUpdateTree={this.props.forceUpdateTree}
           nodeData={this.props.nodeData}
-          isValidName={this.isValidName}
           visible={!this.props.nodeData.collapsed}
         />
       </div>

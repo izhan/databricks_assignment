@@ -21,6 +21,15 @@ var AddNodeInput = React.createClass({displayName: "AddNodeInput",
     }
   },
 
+  isValidName: function(name) {
+    var isNonEmpty = name.trim();
+
+    // TODO this knows too much about the paths...perhaps the better way is to 
+    // have the tree throw an exception and to catch it?
+    var newPath = this.props.nodeData.path + "/" + name;
+    return isNonEmpty && !this.props.tree.pathExists(newPath);
+  },
+
   toggleIsAdding: function() {
     this.setState({isAdding: !this.state.isAdding});
   },
@@ -30,7 +39,7 @@ var AddNodeInput = React.createClass({displayName: "AddNodeInput",
   },
 
   onSubmit: function() {
-    var isValid = this.props.isValidName(this.state.newChildName);
+    var isValid = this.isValidName(this.state.newChildName);
     if (isValid) {
       this.props.tree.appendNode(this.props.nodeData.path, this.state.newChildName);
       this.setState({newChildName: "", isAdding: false});
