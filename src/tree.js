@@ -74,7 +74,7 @@
    * @return {boolean} Does the given path exist in the tree already?
    */
   BrowserTree.prototype.pathExists = function(path) {
-    return this.pathToNodeMap[path] != null;
+    return this.pathToNodeMap[path] !== null && this.pathToNodeMap[path] !== undefined;
   };
 
   /**

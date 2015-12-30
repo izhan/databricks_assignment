@@ -32,7 +32,7 @@ describe('Node', function(){
   };
 
   beforeEach(function() {
-    // setting up tree
+    // TODO setting up tree in same way as tree_spec.js
     rootNode = new BrowserNode('foo', false);
     childNode1 = new BrowserNode('child1', false);
     childNode2 = new BrowserNode('child2', false);
