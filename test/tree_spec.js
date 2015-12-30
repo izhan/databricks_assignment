@@ -95,4 +95,20 @@ describe('BrowserTree', function(){
       expect(childNode2.collapsed).to.be.equal(true);
     });
   });
+
+  describe('with special names', function() {
+    it('should escape backslashes', function() {
+      var newNode = tree.appendNode(childNode1.path, "data\\bricks");
+      expect(newNode.name).to.be.equal("data\\\\bricks");
+      tree.updateName(newNode.path, "bricks\\data");
+      expect(newNode.name).to.be.equal("bricks\\\\data");
+    });
+
+    it('should escape slashes', function() {
+      var newNode = tree.appendNode(childNode1.path, "data/bricks");
+      expect(newNode.name).to.be.equal("data\\/bricks");
+      tree.updateName(newNode.path, "bricks/data");
+      expect(newNode.name).to.be.equal("bricks\\/data");
+    });
+  });
 });
