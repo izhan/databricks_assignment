@@ -36,7 +36,8 @@ var Node = React.createClass({
     var data = this.props.nodeData;
     var basePath = data.parent ? data.parent.path : data.path;
     var newPath = basePath + "/" + name;
-    return isNonEmpty && !this.props.tree.pathExists(newPath);
+    var unchanged = name == this.props.nodeData.name;
+    return isNonEmpty && (unchanged || !this.props.tree.pathExists(newPath));
   },
 
   // user clicks on the toggle button
