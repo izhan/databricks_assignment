@@ -23,7 +23,7 @@ var AddNodeInput = React.createClass({displayName: "AddNodeInput",
   },
 
   getWrapperClassName: function() {
-    return this.props.visible ? "node-add-wrapper" : "node-add-wrapper hidden";
+    return this.props.visible ? "node-add-wrapper" : "node-add-wrapper node-add-hidden";
   },
 
   isValidName: function(name) {
