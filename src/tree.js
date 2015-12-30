@@ -85,7 +85,7 @@
    * @private
    */
   var _updateMapPaths = function(map, parentNode) {
-    parentNode.mapChildNodes(function(node){
+    parentNode.mapNodes(function(node){
       map[node.path] = node;
     });
     return map;
@@ -99,7 +99,7 @@
    * @private
    */
   var _removeMapPaths = function(map, parentNode) {
-    parentNode.mapChildNodes(function(node){
+    parentNode.mapNodes(function(node){
       map[node.path] = null;
     });
     return map;

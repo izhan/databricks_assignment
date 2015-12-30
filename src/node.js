@@ -32,7 +32,7 @@
     this.name = name;
     
     // recursively update the paths of children 
-    this.mapChildNodes(function(node){
+    this.mapNodes(function(node){
       if (node.parent) {
         node.path = node.parent.path + "/" + node.name;
       } else {
@@ -44,13 +44,13 @@
   };
 
   /**
-   * Traverses the subtree starting from this node, and calls func on each
-   * child node encountered
+   * Traverses the subtree starting from this node, and calls func on the root
+   * node and each child node encountered
    * @param  {function} func The function to be called on each child node.
    *                         Accepts as an argument a BrowserNode child node.
    * @return {BrowserNode} The root node we start from
    */
-  BrowserNode.prototype.mapChildNodes = function(func) {
+  BrowserNode.prototype.mapNodes = function(func) {
     func(this);
 
     if (!this.children) {
@@ -59,7 +59,7 @@
 
     for(var i = 0; i < this.children.length; i++) {
       var child = this.children[i];
-      child.mapChildNodes(func);
+      child.mapNodes(func);
     }
 
     return this;
