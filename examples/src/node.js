@@ -12,8 +12,6 @@ var Node = React.createClass({
   getInitialState: function() {
     return {
       isEditing: false,
-      isAdding: false, // showing/hiding the edit input field
-      newChildName: "", // name of a child node to add
       editedName: "" // new name of the node when being edited
     }
   },
@@ -24,26 +22,25 @@ var Node = React.createClass({
       var node = ReactDOM.findDOMNode(this.refs.editName);
       node.focus();
     }
-    if (!prevState.isAdding && this.state.isAdding) {
-      var node = ReactDOM.findDOMNode(this.refs.addChild);
-      node.focus();
-    }
   },
 
   toggleEditing: function() {
     this.setState({isEditing: !this.state.isEditing});
   },
 
-  toggleIsAdding: function() {
-    this.setState({isAdding: !this.state.isAdding});
+  isValidName: function(name) {
+    var isNonEmpty = name.trim();
+
+    // TODO this knows too much about the paths...perhaps the better way is to 
+    // have the tree throw an exception and to catch it?
+    var data = this.props.nodeData;
+    var basePath = data.parent ? data.parent.path : data.path;
+    var newPath = basePath + "/" + name;
+    return isNonEmpty && !this.props.tree.pathExists(newPath);
   },
 
   onChangeName: function(event) {
     this.setState({editedName: event.target.value});
-  },
-
-  onChangeChild: function(event) {
-    this.setState({newChildName: event.target.value});
   },
 
   onToggleCollapsed: function() {
@@ -57,37 +54,15 @@ var Node = React.createClass({
   },
 
   onBlur: function() {
-    var isNonEmpty = this.state.editedName.trim();
-    // TODO this knows too much...perhaps the better way is to have the tree
-    // throw an exception and to catch it?
-    var data = this.props.nodeData;
-    var basePath = data.parent ? data.parent.path : data.path;
-    var newPath = basePath + "/" + this.state.editedName;
-    var isInvalid = this.props.tree.pathExists(newPath);
+    var isValid = this.isValidName(this.state.editedName);
 
-    if (isNonEmpty && !isInvalid) {
+    if (isValid) {
       this.props.tree.updateName(this.props.nodeData.path, this.state.editedName);
       this.props.forceUpdateTree();
-    } else if (isInvalid) {
-      alert("Name already exists! Please choose another one.");
+    } else if (!isValid) {
+      alert("Invalid name! Please choose another one.");
     }
     this.toggleEditing();
-  },
-
-  onAddChild: function() {
-    // TODO this knows too much...perhaps the better way is to have the tree
-    // throw an exception and to catch it?
-    var data = this.props.nodeData;
-    var basePath = data.parent ? data.parent.path : data.path;
-    var newPath = basePath + "/" + this.state.newChildName;
-    var isInvalid = this.props.tree.pathExists(newPath);
-    if (isInvalid) {
-      alert("Name already exists! Please choose another one.");
-    } else {
-      this.props.tree.appendNode(this.props.nodeData.path, this.state.newChildName);
-      this.setState({newChildName: "", isAdding: false});
-      this.props.forceUpdateTree();
-    }
   },
 
   renderCollapseButton: function() {
@@ -147,32 +122,6 @@ var Node = React.createClass({
     }
   },
 
-  renderAddButton: function() {
-    if (this.props.nodeData.collapsed) {
-      return;
-    } else if (this.state.isAdding) {
-      return (
-        <div className="node-add-child">
-          <input
-            ref="addChild"
-            className="add-child-input"
-            value={this.state.newChildName}
-            onChange={this.onChangeChild}
-          />
-          <button className="add-input-button" onClick={this.onAddChild}>
-            +
-          </button>
-        </div>
-      )
-    } else {
-      return (
-        <div className="node-add-button" onClick={this.toggleIsAdding}>
-          +
-        </div>
-      )
-    }
-  },
-
   render: function() {
     return (
       <div className="node-wrapper">
@@ -186,7 +135,14 @@ var Node = React.createClass({
         <div className="node-children">
           {this.renderChildren()}
         </div>
-        {this.renderAddButton()}
+        
+        <AddNodeInput 
+          tree={this.props.tree}
+          forceUpdateTree={this.props.forceUpdateTree}
+          nodeData={this.props.nodeData}
+          isValidName={this.isValidName}
+          visible={!this.props.nodeData.collapsed}
+        />
       </div>
     );
   }
