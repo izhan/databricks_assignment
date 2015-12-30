@@ -48,6 +48,6 @@
   cursor: pointer;
 }
 
-.hidden {
+.node-add-hidden {
   display: none;
 }

@@ -98,10 +98,10 @@ describe('Node', function(){
     });
 
     it('should hide the add button when clicked', function() {
-      expect(getElementWithClass("node-add-button").length).to.be.equal(5);
+      expect(getElementWithClass("node-add-hidden").length).to.be.equal(0);
       // collapsing the root node
       TestUtils.Simulate.click(collapseButton[0]);
-      expect(getElementWithClass("node-add-button").length).to.be.equal(0);
+      expect(getElementWithClass("node-add-hidden").length).to.be.equal(1);
     });
   });
 });
