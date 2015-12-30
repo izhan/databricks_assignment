@@ -139,7 +139,7 @@ var Node = React.createClass({
         <AddNodeInput 
           tree={this.props.tree}
           forceUpdateTree={this.props.forceUpdateTree}
-          nodeData={this.props.nodeData}
+          path={this.props.nodeData.path}
           visible={!this.props.nodeData.collapsed}
         />
       </div>

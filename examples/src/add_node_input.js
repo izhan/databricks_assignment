@@ -1,5 +1,6 @@
 var AddNodeInput = React.createClass({
   propTypes: {
+    path: React.PropTypes.string.isRequired,
     // BrowserTree to make calls to for tree mutations
     tree: React.PropTypes.object.isRequired,
     // called to force an update of the entire tree from the root
@@ -21,12 +22,16 @@ var AddNodeInput = React.createClass({
     }
   },
 
+  getWrapperClass: function() {
+    return this.props.visible ? "node-add-wrapper" : "node-add-wrapper hidden";
+  },
+
   isValidName: function(name) {
     var isNonEmpty = name.trim();
 
     // TODO this knows too much about the paths...perhaps the better way is to 
     // have the tree throw an exception and to catch it?
-    var newPath = this.props.nodeData.path + "/" + name;
+    var newPath = this.props.path + "/" + name;
     return isNonEmpty && !this.props.tree.pathExists(newPath);
   },
 
@@ -41,7 +46,7 @@ var AddNodeInput = React.createClass({
   onSubmit: function() {
     var isValid = this.isValidName(this.state.newChildName);
     if (isValid) {
-      this.props.tree.appendNode(this.props.nodeData.path, this.state.newChildName);
+      this.props.tree.appendNode(this.props.path, this.state.newChildName);
       this.setState({newChildName: "", isAdding: false});
       this.props.forceUpdateTree();
     } else {
@@ -52,22 +57,26 @@ var AddNodeInput = React.createClass({
   render: function() {
     if (this.state.isAdding) {
       return (
-        <div className="node-add-child">
-          <input
-            ref="addChild"
-            className="add-child-input"
-            value={this.state.newChildName}
-            onChange={this.onChange}
-          />
-          <button className="add-input-button" onClick={this.onSubmit}>
-            +
-          </button>
+        <div className={this.getWrapperClass()}>
+          <div className="node-add-child">
+            <input
+              ref="addChild"
+              className="add-child-input"
+              value={this.state.newChildName}
+              onChange={this.onChange}
+            />
+            <button className="add-input-button" onClick={this.onSubmit}>
+              +
+            </button>
+          </div>
         </div>
       )
     } else {
       return (
-        <div className="node-add-button" onClick={this.toggleIsAdding}>
-          +
+        <div className={this.getWrapperClass()}>
+          <div className="node-add-button" onClick={this.toggleIsAdding}>
+            +
+          </div>
         </div>
       )
     }
