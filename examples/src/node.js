@@ -12,9 +12,9 @@ var Node = React.createClass({
   getInitialState: function() {
     return {
       isEditing: false,
-      addChildName: "",
-      draft: "",
-      addVisible: false
+      isAdding: false, // showing/hiding the edit input field
+      newChildName: "", // name of a child node to add
+      editedName: "" // new name of the node when being edited
     }
   },
 
@@ -24,7 +24,7 @@ var Node = React.createClass({
       var node = ReactDOM.findDOMNode(this.refs.editName);
       node.focus();
     }
-    if (!prevState.addVisible && this.state.addVisible) {
+    if (!prevState.isAdding && this.state.isAdding) {
       var node = ReactDOM.findDOMNode(this.refs.addChild);
       node.focus();
     }
@@ -34,16 +34,16 @@ var Node = React.createClass({
     this.setState({isEditing: !this.state.isEditing});
   },
 
-  toggleAddVisible: function() {
-    this.setState({addVisible: !this.state.addVisible});
+  toggleIsAdding: function() {
+    this.setState({isAdding: !this.state.isAdding});
   },
 
   onChangeName: function(event) {
-    this.setState({draft: event.target.value});
+    this.setState({editedName: event.target.value});
   },
 
   onChangeChild: function(event) {
-    this.setState({addChildName: event.target.value});
+    this.setState({newChildName: event.target.value});
   },
 
   onToggleCollapsed: function() {
@@ -57,16 +57,16 @@ var Node = React.createClass({
   },
 
   onBlur: function() {
-    var isNonEmpty = this.state.draft.trim();
+    var isNonEmpty = this.state.editedName.trim();
     // TODO this knows too much...perhaps the better way is to have the tree
     // throw an exception and to catch it?
     var data = this.props.nodeData;
     var basePath = data.parent ? data.parent.path : data.path;
-    var newPath = basePath + "/" + this.state.draft;
+    var newPath = basePath + "/" + this.state.editedName;
     var isInvalid = this.props.tree.pathExists(newPath);
 
     if (isNonEmpty && !isInvalid) {
-      this.props.tree.updateName(this.props.nodeData.path, this.state.draft);
+      this.props.tree.updateName(this.props.nodeData.path, this.state.editedName);
       this.props.forceUpdateTree();
     } else if (isInvalid) {
       alert("Name already exists! Please choose another one.");
@@ -79,13 +79,13 @@ var Node = React.createClass({
     // throw an exception and to catch it?
     var data = this.props.nodeData;
     var basePath = data.parent ? data.parent.path : data.path;
-    var newPath = basePath + "/" + this.state.addChildName;
+    var newPath = basePath + "/" + this.state.newChildName;
     var isInvalid = this.props.tree.pathExists(newPath);
     if (isInvalid) {
       alert("Name already exists! Please choose another one.");
     } else {
-      this.props.tree.appendNode(this.props.nodeData.path, this.state.addChildName);
-      this.setState({addChildName: "", addVisible: false});
+      this.props.tree.appendNode(this.props.nodeData.path, this.state.newChildName);
+      this.setState({newChildName: "", isAdding: false});
       this.props.forceUpdateTree();
     }
   },
@@ -134,7 +134,7 @@ var Node = React.createClass({
       return (<input
         ref="editName"
         className="node-edit"
-        value={this.state.draft}
+        value={this.state.editedName}
         onClick={this.toggleEditing}
         onChange={this.onChangeName}
         onBlur={this.onBlur}
@@ -150,13 +150,13 @@ var Node = React.createClass({
   renderAddButton: function() {
     if (this.props.nodeData.collapsed) {
       return;
-    } else if (this.state.addVisible) {
+    } else if (this.state.isAdding) {
       return (
         <div className="node-add-child">
           <input
             ref="addChild"
             className="add-child-input"
-            value={this.state.addChildName}
+            value={this.state.newChildName}
             onChange={this.onChangeChild}
           />
           <button className="add-input-button" onClick={this.onAddChild}>
@@ -166,7 +166,7 @@ var Node = React.createClass({
       )
     } else {
       return (
-        <div className="node-add-button" onClick={this.toggleAddVisible}>
+        <div className="node-add-button" onClick={this.toggleIsAdding}>
           +
         </div>
       )
