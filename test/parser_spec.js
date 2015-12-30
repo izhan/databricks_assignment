@@ -46,4 +46,14 @@ describe('Parser', function(){
       expect(firstLevelNodes[2].children.length).to.be.equal(2);
     });
   });
+
+  describe('paths', function() {
+    var tree = Parser.initTree(normalTree);
+
+    it('should inherit the paths properly', function() {
+      expect(tree.rootNode.path).to.be.equal("/root");
+      expect(tree.rootNode.children[2].path).to.be.equal("/root/child3");
+      expect(tree.rootNode.children[2].children[0].path).to.be.equal("/root/child3/grandchild1");
+    });
+  })
 });
