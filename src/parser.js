@@ -11,7 +11,7 @@ var Parser = (function () {
     // needs to actually be BFS to have proper path inheritance
     var queue = [[rootNode, inputData]];
 
-    while (queue.length != 0) {
+    while (queue.length !== 0) {
       var next = queue.shift();
       var node = next[0];
       var data = next[1];

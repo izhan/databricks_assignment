@@ -96,6 +96,16 @@ describe('BrowserTree', function(){
     });
   });
 
+  describe('pathExists', function() {
+    it('should return true for nodes in the tree', function() {
+      expect(tree.pathExists(childNode1.path)).to.be.equal(true);
+    });
+
+    it('should return false for nodes not in the tree', function() {
+      expect(tree.pathExists("/foo/bar")).to.be.equal(false);
+    });
+  });
+
   describe('with special names', function() {
     it('should escape backslashes', function() {
       var newNode = tree.appendNode(childNode1.path, "data\\bricks");

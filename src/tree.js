@@ -17,8 +17,8 @@
    */
   BrowserTree.prototype.appendNode = function(path, name) {
     var parentNode = this.pathToNodeMap[path];
-    var sanitizedName = _sanitizeName(name);
-    var childNode = new BrowserNode(sanitizedName, false);
+    var escapedName = _escapeName(name);
+    var childNode = new BrowserNode(escapedName, false);
     parentNode.appendChild(childNode);
 
     this.pathToNodeMap[childNode.path] = childNode;
@@ -51,8 +51,8 @@
     var node = this.pathToNodeMap[path];
 
     _removeMapPaths(this.pathToNodeMap, node);
-    var sanitizedName = _sanitizeName(name);
-    node.updateName(sanitizedName);
+    var escapedName = _escapeName(name);
+    node.updateName(escapedName);
     _updateMapPaths(this.pathToNodeMap, node);
 
     return node;
@@ -67,6 +67,14 @@
     node.collapsed = !this.pathToNodeMap[path].collapsed;
 
     return node;
+  };
+
+  /**
+   * @param  {string} path The path of the node we want to check
+   * @return {boolean} Does the given path exist in the tree already?
+   */
+  BrowserTree.prototype.pathExists = function(path) {
+    return path in this.pathToNodeMap;
   };
 
   /**
@@ -97,7 +105,14 @@
     return map;
   };
 
-  var _sanitizeName = function(name) {
+  /**
+   * Escapes any occurences of slashes or backslashes in the name of the node
+   * by using backslashes
+   * @param  {string} name
+   * @return {string} the escaped name
+   * @private
+   */
+  var _escapeName = function(name) {
     return name.replace(/\\/, "\\\\").replace(/\//, "\\\/");
   };
 }());

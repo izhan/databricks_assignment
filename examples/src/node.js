@@ -47,18 +47,37 @@ var Node = React.createClass({
   },
 
   onBlur: function() {
-    var updatedName = this.state.draft.trim();
-    if (updatedName) {
+    var isNonEmpty = this.state.draft.trim();
+    // TODO this knows too much...perhaps the better way is to have the tree
+    // throw an exception and to catch it?
+    var data = this.props.nodeData;
+    var basePath = data.parent ? data.parent.path : data.path;
+    var newPath = basePath + "/" + this.state.draft;
+    var isInvalid = this.props.tree.pathExists(newPath);
+
+    if (isNonEmpty && !isInvalid) {
       this.props.tree.updateName(this.props.nodeData.path, this.state.draft);
       this.props.forceUpdateTree();
+    } else if (isInvalid) {
+      alert("Name already exists! Please choose another one.");
     }
     this.toggleEditing();
   },
 
   onAddChild: function() {
-    this.props.tree.appendNode(this.props.nodeData.path, this.state.addChildName);
-    this.setState({addChildName: "", addVisible: false});
-    this.props.forceUpdateTree();
+    // TODO this knows too much...perhaps the better way is to have the tree
+    // throw an exception and to catch it?
+    var data = this.props.nodeData;
+    var basePath = data.parent ? data.parent.path : data.path;
+    var newPath = basePath + "/" + this.state.addChildName;
+    var isInvalid = this.props.tree.pathExists(newPath);
+    if (isInvalid) {
+      alert("Name already exists! Please choose another one.");
+    } else {
+      this.props.tree.appendNode(this.props.nodeData.path, this.state.addChildName);
+      this.setState({addChildName: "", addVisible: false});
+      this.props.forceUpdateTree();
+    }
   },
 
   renderCollapseButton: function() {
