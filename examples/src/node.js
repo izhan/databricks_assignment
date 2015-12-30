@@ -24,8 +24,12 @@ var Node = React.createClass({
     }
   },
 
-  toggleEditing: function() {
-    this.setState({isEditing: !this.state.isEditing});
+  enableEditing: function() {
+    this.setState({isEditing: true});
+  },
+
+  disableEditing: function() {
+    this.setState({isEditing: false});
   },
 
   isValidName: function(name) {
@@ -59,14 +63,13 @@ var Node = React.createClass({
   // will alert the user if the name is invalid
   onBlur: function() {
     var isValid = this.isValidName(this.state.editedName);
-
     if (isValid) {
       this.props.tree.updateName(this.props.nodeData.path, this.state.editedName);
       this.props.forceUpdateTree();
     } else if (!isValid) {
       alert("Invalid name! Please choose another one.");
     }
-    this.toggleEditing();
+    this.disableEditing();
   },
 
   renderCollapseButton: function() {
@@ -114,13 +117,13 @@ var Node = React.createClass({
         ref="editName"
         className="node-edit"
         value={this.state.editedName}
-        onClick={this.toggleEditing}
+        onClick={this.enableEditing}
         onChange={this.onChangeName}
         onBlur={this.onBlur}
       />);
     } else {
       return (
-        <div className="node-name" onClick={this.toggleEditing}>
+        <div className="node-name" onClick={this.enableEditing}>
           {this.props.nodeData.name}
         </div>);
     }
