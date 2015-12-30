@@ -22,7 +22,7 @@ var AddNodeInput = React.createClass({
     }
   },
 
-  getWrapperClass: function() {
+  getWrapperClassName: function() {
     return this.props.visible ? "node-add-wrapper" : "node-add-wrapper hidden";
   },
 
@@ -43,6 +43,8 @@ var AddNodeInput = React.createClass({
     this.setState({newChildName: event.target.value});
   },
 
+  // when user clicks on the add button to add the node
+  // will alert the user if the name is invalid
   onSubmit: function() {
     var isValid = this.isValidName(this.state.newChildName);
     if (isValid) {
@@ -57,7 +59,7 @@ var AddNodeInput = React.createClass({
   render: function() {
     if (this.state.isAdding) {
       return (
-        <div className={this.getWrapperClass()}>
+        <div className={this.getWrapperClassName()}>
           <div className="node-add-child">
             <input
               ref="addChild"
@@ -73,7 +75,7 @@ var AddNodeInput = React.createClass({
       )
     } else {
       return (
-        <div className={this.getWrapperClass()}>
+        <div className={this.getWrapperClassName()}>
           <div className="node-add-button" onClick={this.toggleIsAdding}>
             +
           </div>

@@ -39,10 +39,7 @@ var Node = React.createClass({
     return isNonEmpty && !this.props.tree.pathExists(newPath);
   },
 
-  onChangeName: function(event) {
-    this.setState({editedName: event.target.value});
-  },
-
+  // user clicks on the toggle button
   onToggleCollapsed: function() {
     this.props.tree.toggleCollapsed(this.props.nodeData.path);
     this.props.forceUpdateTree();
@@ -53,6 +50,12 @@ var Node = React.createClass({
     this.props.forceUpdateTree();
   },
 
+  onChangeName: function(event) {
+    this.setState({editedName: event.target.value});
+  },
+
+  // when a user clicks away from the input field while editing the name
+  // will alert the user if the name is invalid
   onBlur: function() {
     var isValid = this.isValidName(this.state.editedName);
 
