@@ -1,4 +1,14 @@
 var Node = React.createClass({displayName: "Node",
+  propTypes: {
+    // BrowserNode node this component represents
+    nodeData: React.PropTypes.object.isRequired,
+    // BrowserTree to make calls to for tree mutations
+    tree: React.PropTypes.object.isRequired,
+    // called to force an update of the entire tree from the root
+    forceUpdateTree: React.PropTypes.func.isRequired,
+    isParent: React.PropTypes.bool
+  },
+
   getInitialState: function() {
     return {
       isEditing: false,
