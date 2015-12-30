@@ -26,6 +26,11 @@ describe('Node', function(){
     return TestUtils.renderIntoDocument(React.createElement(DummyNodeContainer, props));
   };
 
+  // helper to help with verbosity
+  var getElementWithClass = function(elClass) {
+    return TestUtils.scryRenderedDOMComponentsWithClass(reactNode, elClass);
+  };
+
   beforeEach(function() {
     // setting up tree
     rootNode = new BrowserNode('foo', false);
@@ -47,7 +52,7 @@ describe('Node', function(){
     });
 
     it('should not have a delete button', function() {
-      var deleteButton = TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "delete-button");
+      var deleteButton = getElementWithClass("delete-button");
       expect(deleteButton.length).to.be.equal(0);
     });
   });
@@ -58,13 +63,13 @@ describe('Node', function(){
     });
 
     it('should remove clicked node and all children from dom', function() {
-      var deleteButton = TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "delete-button");
-      var prevNumOfNodes = TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "node-wrapper").length;
+      var deleteButton = getElementWithClass("delete-button");
+      var prevNumOfNodes = getElementWithClass("node-wrapper").length;
 
       // removing the first child node
       TestUtils.Simulate.click(deleteButton[0]);
 
-      var afterNumOfNodes = TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "node-wrapper").length;
+      var afterNumOfNodes = getElementWithClass("node-wrapper").length;
 
       // removing parent node and two children
       expect(afterNumOfNodes).to.be.equal(prevNumOfNodes - 3);
@@ -75,7 +80,7 @@ describe('Node', function(){
     var collapseButton;
     beforeEach(function() {
       reactNode = createNodeWithTree(tree, true);
-      collapseButton = TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "collapse-button");
+      collapseButton = getElementWithClass("collapse-button");
     });
 
     it('should default to a - sign, but change to + when clicked', function() {
@@ -88,15 +93,15 @@ describe('Node', function(){
       // collapsing the root node
       TestUtils.Simulate.click(collapseButton[0]);
 
-      var numOfNodes = TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "node-wrapper").length;
+      var numOfNodes = getElementWithClass("node-wrapper").length;
       expect(numOfNodes).to.be.equal(1);
     });
 
     it('should hide the add button when clicked', function() {
-      expect(TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "node-add-button").length).to.be.equal(5);
+      expect(getElementWithClass("node-add-button").length).to.be.equal(5);
       // collapsing the root node
       TestUtils.Simulate.click(collapseButton[0]);
-      expect(TestUtils.scryRenderedDOMComponentsWithClass(reactNode, "node-add-button").length).to.be.equal(0);
+      expect(getElementWithClass("node-add-button").length).to.be.equal(0);
     });
   });
 });
